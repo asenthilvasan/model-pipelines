@@ -1,0 +1,18 @@
+// this file controls the interactions between a model and
+// the methods it wants to call
+// because this project will only have models related to image processing,
+// can reuse this service for enhancing and detection
+
+syntax = "proto3";
+
+service ModelService {
+  rpc Predict (ImageRequest) returns (ImageResponse) {}
+}
+
+message ImageRequest {
+  bytes image_data = 1;
+}
+
+message ImageResponse {
+  bytes result_image = 1;
+}
