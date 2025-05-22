@@ -1,0 +1,5 @@
+.idea
+tests
+.env
+weights
+yolov5s.pt

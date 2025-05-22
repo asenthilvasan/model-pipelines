@@ -1,0 +1,20 @@
+// this file controls the interactions between controller and
+// the methods it wants to call
+// ControllerService wants to create a pipeline request that takes in
+// an image url (which will get converted to bytes later) and
+// a pipeline order which tells the controller which model to call
+
+syntax = "proto3";
+
+service ControllerService {
+  rpc ProcessPipeline (PipelineRequest) returns (PipelineOutput);
+}
+
+message PipelineRequest {
+  string image_url = 1;
+  repeated string pipeline_steps = 2;
+}
+
+message PipelineOutput {
+  bytes final_image = 1;
+}
