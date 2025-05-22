@@ -3,3 +3,5 @@ tests
 .env
 weights
 yolov5s.pt
+.venv
+.python-version

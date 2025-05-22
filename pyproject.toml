@@ -10,14 +10,25 @@ requires-python = ">=3.12"
 dependencies = [
     "grpcio (>=1.71.0,<2.0.0)",
     "grpcio-tools (>=1.71.0,<2.0.0)",
-    "torch (>=2.7.0,<3.0.0)",
-    "realesrgan @ git+https://github.com/sberbank-ai/Real-ESRGAN.git",
-    "pandas (>=2.2.3,<3.0.0)",
-    "requests (>=2.32.3,<3.0.0)",
-    "pillow (>=11.2.1,<12.0.0)",
-    "numpy (>=2.2.6,<3.0.0)",
+    "torch (>=1.8.0)",
+    "realesrgan @ git+https://github.com/asenthilvasan/Real-ESRGAN.git",
+    "pandas (>=1.1.4)",
+    "requests (>=2.32.2)",
+    "pillow (>=10.3.0)",
+    "numpy (>=1.23.5)",
     "opencv-python-headless (>=4.11.0.86,<5.0.0.0)",
-    "gitpython (>=3.1.30)"
+    "gitpython (>=3.1.30)",
+    "matplotlib (>=3.3)",
+    "opencv-python (>=4.1.1)",
+    "pyyaml (>=5.3.1)",
+    "scipy (>=1.4.1)",
+    "thop (>=0.1.1)",
+    "torchvision (>=0.9.0)",
+    "tqdm (>=4.66.3)",
+    "ultralytics (>=8.2.34)",
+    "seaborn (>=0.11.0)",
+    "setuptools (>=70.0.0)",
+    "psutil"
 ]
 
 [tool.poetry]

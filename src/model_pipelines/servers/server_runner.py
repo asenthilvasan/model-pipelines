@@ -1,34 +1,23 @@
 import asyncio
-import signal
 import grpc
 
-async def run_grpc_server(servicer_cls, add_servicer_fn, port: int):
-    """
-    Starts and gracefully shuts down an async gRPC server.
 
-    Args:
-        servicer_cls: The class implementing your gRPC service (e.g., ControllerService).
-        add_servicer_fn: The generated gRPC function to bind the service (e.g., add_ControllerServiceServicer_to_server).
-        port (int): The port to listen on (e.g., 50053).
-    """
+async def run_grpc_server(servicer_cls, add_servicer_fn, port: int):
     server = grpc.aio.server()
     add_servicer_fn(servicer_cls(), server)
-    server.add_insecure_port(f"[::]:{port}")
+
+    server_address = f"[::]:{port}"
+    server.add_insecure_port(server_address)
+
     await server.start()
+    print(f"✅ gRPC server running on {server_address}. Press Ctrl+C or Stop to exit.")
 
-    print(f"✅ gRPC server running on port {port}. Press Ctrl+C to stop.")
-
-    shutdown_event = asyncio.Event()
-
-    def handle_shutdown():
-        shutdown_event.set()
-
-    loop = asyncio.get_running_loop()
-    loop.add_signal_handler(signal.SIGINT, handle_shutdown)
-    loop.add_signal_handler(signal.SIGTERM, handle_shutdown)
-
-    await shutdown_event.wait()
-
-    print(f"\n🛑 Shutting down gRPC server on port {port}...")
-    await server.stop(grace=1)
-    print("✅ Shutdown complete.")
+    try:
+        await server.wait_for_termination()
+    except (asyncio.CancelledError, KeyboardInterrupt):
+        print("⚠️ Shutdown initiated. Stopping server...")
+        try:
+            await server.stop(grace=None)
+        except asyncio.CancelledError:
+            print("⚠️ Forced exit before full shutdown.")
+        print("🛑 gRPC server shut down.")
