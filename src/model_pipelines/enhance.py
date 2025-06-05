@@ -13,7 +13,7 @@ class EnhanceService(ModelService_pb2_grpc.ModelServiceServicer):
         self.model.load_weights('weights/RealESRGAN_x4.pth', download=True)
         print("✅ EnhanceService ready.")
 
-    def Predict(self, request, context):
+    async def Predict(self, request, context):
         image = request.image_data
         image = Image.open(io.BytesIO(image))
         sr_image = self.model.predict(image)

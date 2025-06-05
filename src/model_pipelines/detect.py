@@ -19,7 +19,7 @@ class DetectService(ModelService_pb2_grpc.ModelServiceServicer):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
 
-    def Predict(self, request, context):
+    async def Predict(self, request, context):
         image = request.image_data
         input_image = Image.open(io.BytesIO(image))
         sr_image = self.model(input_image)
