@@ -8,4 +8,4 @@ if __name__ == '__main__':
     asyncio.run(run_grpc_server(
         servicer_cls=EnhanceService,
         add_servicer_fn=add_ModelServiceServicer_to_server,
-        port=50052))
+        port=50053))

@@ -29,5 +29,24 @@ print(torch.cuda.is_available()) # -> should print True if installed correctly
   -D payload.json `
   -c 10 -n 100 `
   --insecure `
-  localhost:50053
+  localhost:50051
+```
+
+- to run grafana dashboards and get realtime data with k6 + influxdb, run these commands in your terminal (macOS)
+  - you will need to download grafana, k6, influxdb
+```
+influxdb # to start the influxdb
+# follow a guide elsewhere to see how to get started using influx
+```
+```
+brew services start grafana # starts the grafana server
+# you will once again need to login, so follow a guide elsehwere
+```
+- then run the following to test your script.js k6 script
+```
+K6_INFLUXDB_ORGANIZATION="<INFLUXDB-ORGANIZATION-NAME>" \
+K6_INFLUXDB_BUCKET="<INFLUXDB-BUCKET-NAME>" \
+K6_INFLUXDB_TOKEN="<INFLUXDB-TOKEN>" \
+K6_INFLUXDB_ADDR="<INFLUXDB-HTTP-ADDRESS>" \
+./k6 run script.js -o xk6-influxdb
 ```

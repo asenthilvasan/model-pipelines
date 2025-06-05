@@ -7,11 +7,9 @@ from model_pipelines.proto import ModelService_pb2_grpc, ModelService_pb2
 
 class EnhanceService(ModelService_pb2_grpc.ModelServiceServicer):
     def __init__(self):
-        print("🚀 Initializing EnhanceService...")
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         self.model = RealESRGAN(device, scale=4)
-        print("📦 Loading weights...")
         self.model.load_weights('weights/RealESRGAN_x4.pth', download=True)
         print("✅ EnhanceService ready.")
 

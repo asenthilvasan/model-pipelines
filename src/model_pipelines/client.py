@@ -3,10 +3,9 @@ import grpc
 from model_pipelines.proto import ControllerService_pb2_grpc, ControllerService_pb2
 from PIL import Image
 from io import BytesIO
-import time
 
 def main():
-    channel = grpc.insecure_channel("localhost:50053")
+    channel = grpc.insecure_channel("localhost:50051")
 
     stub = ControllerService_pb2_grpc.ControllerServiceStub(channel)
 
