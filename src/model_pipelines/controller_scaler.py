@@ -71,8 +71,10 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
         async with self._lock:
             if model_name == "detect":
                 stub_key = f"detect{self.stub_index[model_name] % len(self.detect_ports)}"
-            else:
+            elif model_name == "enhance":
                 stub_key = f"enhance{self.stub_index[model_name] % len(self.enhance_ports)}"
+            else:
+                raise NotImplementedError
             self.stub_index[model_name] += 1
             print(f"Routing {model_name} request to {stub_key}")
 
@@ -84,38 +86,38 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
         return self._active_requests
 
     async def scale_up_detect(self):
-        new_port = self.detect_ports[-1] + 2
-        self.detect_ports.append(new_port)
+        new_port_detect = self.detect_ports[-1] + 2
+        stub_id_detect = len(self.detect_ports)
+        self.detect_ports.append(new_port_detect)
         event = asyncio.Event()
         self.shutdown_events.append(event)
         task = asyncio.create_task(run_grpc_server(
             servicer_cls=DetectService,
             add_servicer_fn=add_ModelServiceServicer_to_server,
-            port=new_port,
+            port=new_port_detect,
             shutdown_event=event
         ))
         self.server_tasks.append(task)
-        stub_id = len(self.detect_ports)
-        self.stubs[f"detect{stub_id}"] = ModelServiceStub(
-            aio.insecure_channel(f"localhost:{new_port}")
+        self.stubs[f"detect{stub_id_detect}"] = ModelServiceStub(
+            aio.insecure_channel(f"localhost:{new_port_detect}")
         )
         self.last_scale_time["detect"] = time.perf_counter()
 
     async def scale_up_enhance(self):
-        new_port = self.enhance_ports[-1] + 2
-        self.enhance_ports.append(new_port)
+        new_port_enhance = self.enhance_ports[-1] + 2
+        stub_id_enhance = len(self.enhance_ports)
+        self.enhance_ports.append(new_port_enhance)
         event = asyncio.Event()
         self.shutdown_events.append(event)
         task = asyncio.create_task(run_grpc_server(
             servicer_cls=EnhanceService,
             add_servicer_fn=add_ModelServiceServicer_to_server,
-            port=new_port,
+            port=new_port_enhance,
             shutdown_event=event
         ))
         self.server_tasks.append(task)
-        stub_id = len(self.enhance_ports)
-        self.stubs[f"enhance{stub_id}"] = ModelServiceStub(
-            aio.insecure_channel(f"localhost:{new_port}")
+        self.stubs[f"enhance{stub_id_enhance}"] = ModelServiceStub(
+            aio.insecure_channel(f"localhost:{new_port_enhance}")
         )
         self.last_scale_time["enhance"] = time.perf_counter()
 
