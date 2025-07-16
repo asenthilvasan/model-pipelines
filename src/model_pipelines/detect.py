@@ -13,11 +13,25 @@ class DetectService(ModelService_pb2_grpc.ModelServiceServicer):
         os.environ["CUDA_VISIBLE_DEVICES"] = "0" if torch.cuda.is_available() else ""
 
         # Load YOLOv5 model
-        self.model = torch.hub.load("ultralytics/yolov5", "yolov5s", force_reload=False)
+        # possible models: https://github.com/ultralytics/yolov5#pretrained-checkpoints
+        # possible_models goes from light models (key 1) to heavy models (key 9)
+        possible_models = {
+            1: "yolov5n",
+            2: "yolov5s",
+            3: "yolov5m",
+            4: "yolov5l",
+            5: "yolov5x",
+            6: "yolov5n6",
+            7: "yolov5s6",
+            8: "yolov5m6",
+            9: "yolov5l6",
+        }
+        self.model = torch.hub.load("ultralytics/yolov5", possible_models[2], force_reload=False)
 
         # Move it to the proper device manually
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
+        # print(self.model) # can double check GPU / CPU use here
 
     async def Predict(self, request, context):
         image = request.image_data

@@ -59,7 +59,7 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
                 end_time = time.perf_counter()
                 latency = end_time - start_time
                 print(f"[{model}] latency: {latency:.4f}s")
-                print(f"active requests: {self.get_active_request_count()}")
+                print(f"active requests: {self.get_active_request_count()}\n")
 
             return ControllerService_pb2.PipelineOutput(final_image=image_bytes)
 
@@ -95,7 +95,8 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
             shutdown_event=event
         ))
         self.server_tasks.append(task)
-        self.stubs[f"detect{new_port - self.detect_ports[0]}"] = ModelServiceStub(
+        stub_id = len(self.detect_ports)
+        self.stubs[f"detect{stub_id}"] = ModelServiceStub(
             aio.insecure_channel(f"localhost:{new_port}")
         )
         self.last_scale_time["detect"] = time.perf_counter()
@@ -112,7 +113,8 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
             shutdown_event=event
         ))
         self.server_tasks.append(task)
-        self.stubs[f"enhance{new_port - self.enhance_ports[0]}"] = ModelServiceStub(
+        stub_id = len(self.enhance_ports)
+        self.stubs[f"enhance{stub_id}"] = ModelServiceStub(
             aio.insecure_channel(f"localhost:{new_port}")
         )
         self.last_scale_time["enhance"] = time.perf_counter()
