@@ -9,7 +9,8 @@ class ControllerService(ControllerService_pb2_grpc.ControllerServiceServicer):
     def __init__(self):
         self.stubs = {
             "detect": ModelService_pb2_grpc.ModelServiceStub(aio.insecure_channel('localhost:50052')),
-            "enhance": ModelService_pb2_grpc.ModelServiceStub(aio.insecure_channel('localhost:50053'))
+            "enhance": ModelService_pb2_grpc.ModelServiceStub(aio.insecure_channel('localhost:50053')),
+            "classify": ModelService_pb2_grpc.ModelServiceStub(aio.insecure_channel('localhost:50054'))
         }
         self._lock = asyncio.Lock()
         self._active_requests = 0

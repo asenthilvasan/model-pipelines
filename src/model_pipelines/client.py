@@ -11,7 +11,7 @@ def main():
 
     request = ControllerService_pb2.PipelineRequest(
             image_url="https://raw.githubusercontent.com/ai-forever/Real-ESRGAN/main/inputs/lr_lion.png",
-            pipeline_steps=["enhance", "detect"]
+            pipeline_steps=["enhance", "classify"]
         )
 
     response = stub.ProcessPipeline(request)

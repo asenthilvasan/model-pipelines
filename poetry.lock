@@ -2515,6 +2515,21 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "validators"
+version = "0.35.0"
+description = "Python Data Validation for Humans™"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "validators-0.35.0-py3-none-any.whl", hash = "sha256:e8c947097eae7892cb3d26868d637f79f47b4a0554bc6b80065dfe5aac3705dd"},
+    {file = "validators-0.35.0.tar.gz", hash = "sha256:992d6c48a4e77c81f1b4daba10d16c3a9bb0dbb79b3a19ea847ff0928e70497a"},
+]
+
+[package.extras]
+crypto-eth-addresses = ["eth-hash[pycryptodome] (>=0.7.0)"]
+
+[[package]]
 name = "yarl"
 version = "1.20.1"
 description = "Yet another URL library"
@@ -2636,4 +2651,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "458293ea48e40c271deedfdec848ae13016096d01655747b68922e12c26a93f1"
+content-hash = "ae9bbb685ed3b36b37672a760cd3e98d8590677760bcd277739a79a085badb99"
