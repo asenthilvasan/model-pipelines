@@ -14,7 +14,7 @@ class DetectService(ModelService_pb2_grpc.ModelServiceServicer):
 
         # Load YOLOv5 model
         # possible models: https://github.com/ultralytics/yolov5#pretrained-checkpoints
-        # possible_models goes from light models (key 1) to heavy models (key 9)
+        # possible_models goes from light models (key 1) to heavy models (key 5) and repeated for other 4 ending in "6"
         possible_models = {
             1: "yolov5n",
             2: "yolov5s",
@@ -26,7 +26,7 @@ class DetectService(ModelService_pb2_grpc.ModelServiceServicer):
             8: "yolov5m6",
             9: "yolov5l6",
         }
-        self.model = torch.hub.load("ultralytics/yolov5", possible_models[2], force_reload=False)
+        self.model = torch.hub.load("ultralytics/yolov5", possible_models[1], force_reload=False)
 
         # Move it to the proper device manually
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

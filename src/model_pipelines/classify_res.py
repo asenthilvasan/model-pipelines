@@ -10,7 +10,7 @@ class ClassifyResnetService(ModelService_pb2_grpc.ModelServiceServicer):
     def __init__(self):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         print(f'Using {self.device} for inference')
-        self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+        self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet152', pretrained=True)
         self.resnet.eval().to(self.device)
 
         print("✅ Classify(ResNet) Service ready.")
